@@ -1,0 +1,164 @@
+#include <windows.h>
+#define BRICK_WIDTH 300
+#define BRICK_HIGHT 50
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg,
+	WPARAM wParam, LPARAM lParam);
+
+
+LPCTSTR lpszClass = TEXT("201531017 ¹Ú¼Ò¿¬");
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+	LPSTR lpszCmdLine, int nCmdShow)
+{
+	HWND	hwnd;
+	MSG		msg;
+	WNDCLASS WndClass;
+	WndClass.style = CS_HREDRAW | CS_VREDRAW;
+	WndClass.lpfnWndProc = WndProc;
+	WndClass.cbClsExtra = 0;
+	WndClass.cbWndExtra = 0;
+	WndClass.hInstance = hInstance;
+	WndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+	WndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
+	WndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	WndClass.lpszMenuName = NULL;
+	WndClass.lpszClassName = lpszClass;
+	RegisterClass(&WndClass);
+
+	hwnd = CreateWindow(
+		lpszClass,
+		lpszClass,
+		WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		1220,//CW_USEDEFAULT,
+		600,//CW_USEDEFAULT,
+		NULL,
+		NULL,
+		hInstance,
+		NULL
+		);
+	ShowWindow(hwnd, nCmdShow);
+	UpdateWindow(hwnd);
+
+	while (GetMessage(&msg, NULL, 0, 0))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+	return (int)msg.wParam;
+}
+
+static int  i, j, mx, my, rx, ry, x, y, flag;
+COLORREF fColor;
+typedef struct {
+	int left;
+	int right;
+	int top;
+	int bottom;
+	int color;
+} arr;
+HDC hdc, bgDC;
+static arr block[3][4];
+
+void CALLBACK TimerProc(HWND hwnd, UINT iMsg, UINT ievent, DWORD dwTime)
+{
+	rx += i;
+	ry += j;
+
+
+	if (rx >= 1200)
+		i = -25;
+
+	if (rx <= 0)
+		i = 20;
+
+	if (ry >= 540)
+		j = -10;
+
+	if (ry <= 0)
+		j = 15;
+
+	for (mx = 2; mx >= 0; mx--)
+		for (my = 3; my >= 0; my--) {
+			if (block[mx][my].left <= rx && rx <= block[mx][my].right)
+				if (block[mx][my].bottom-5<=ry&&ry <= block[mx][my].bottom+5) {
+					if(block[mx][my].color == 192){
+						block[mx][my].bottom = 0;
+						block[mx][my].top = 0;
+						block[mx][my].color = 0;
+						i *= -1;
+						j *= -1;}
+					else
+						break;
+				}
+		}
+
+		InvalidateRect(hwnd, NULL, TRUE);
+}
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+{
+	PAINTSTRUCT ps;
+	HBRUSH hBrush, oldBrush;
+
+
+
+
+	switch (iMsg)
+	{
+	case WM_CREATE:
+		fColor = RGB(0, 0, 0);
+		rx = 600;
+		ry = 550;
+		i = j = 10;
+
+		for (mx = 0, y = 0; mx < 3; mx++, y += (BRICK_HIGHT + 1)) {
+			for (my = 0, x = 0; my < 4; my++, x += (BRICK_WIDTH + 1)) {
+				block[mx][my].left = x;
+				block[mx][my].top = y;
+				block[mx][my].right = x + BRICK_WIDTH;
+				block[mx][my].bottom = y + BRICK_HIGHT;
+				block[mx][my].color = 192;
+			}
+		}
+		break;
+
+	case WM_LBUTTONUP:
+		SetTimer(hwnd, 1, 10, (TIMERPROC)TimerProc);
+
+		InvalidateRect(hwnd, NULL, TRUE);
+		break;
+
+	case WM_PAINT:
+		hdc = BeginPaint(hwnd, &ps);
+		SetTextColor(hdc, fColor);
+
+		for (mx = 0; mx < 3; mx++) {
+			for (my = 0; my < 4; my++) {
+
+				hBrush = CreateSolidBrush(RGB(block[mx][my].color, 192, 192));
+				oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
+				Rectangle(hdc, block[mx][my].left, block[mx][my].top, block[mx][my].right, block[mx][my].bottom);
+				SelectObject(hdc, oldBrush);
+				DeleteObject(hBrush);
+			}
+		}
+
+		hBrush = CreateSolidBrush(RGB(0, 0, 0));
+		oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
+		Ellipse(hdc, rx, ry, rx + 10, ry + 10);
+		SelectObject(hdc, oldBrush);
+		DeleteObject(hBrush);
+
+		EndPaint(hwnd, &ps);
+		break;
+
+	case WM_DESTROY:
+		KillTimer(hwnd, 1);
+		PostQuitMessage(0);
+		break;
+	}
+	return DefWindowProc(hwnd, iMsg, wParam, lParam);
+}

@@ -1,0 +1,16 @@
+LARGE_INTEGER initial , freq , counter;
+
+
+QueryPerformanceCounter(&initial);
+
+
+QueryPerformanceFrequency(&freq);
+
+
+체크될 대상함수();
+
+
+QueryPerformanceCounter(&counter);
+
+
+float time = (float)((long double)(counter.QuadPart - initial.QuadPart)/(long double)freq.QuadPart);

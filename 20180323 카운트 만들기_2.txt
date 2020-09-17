@@ -1,0 +1,151 @@
+#include <windows.h>
+#include <string.h>
+#include <stdio.h>
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg,
+	WPARAM wParam, LPARAM lParam);
+
+
+LPCTSTR lpszClass = TEXT("201531017 ¹Ú¼Ò¿¬");
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+	LPSTR lpszCmdLine, int nCmdShow)
+{
+	HWND	hwnd;
+	MSG		msg;
+	WNDCLASS WndClass;
+	WndClass.style = CS_HREDRAW | CS_VREDRAW;
+	WndClass.lpfnWndProc = WndProc;
+	WndClass.cbClsExtra = 0;
+	WndClass.cbWndExtra = 0;
+	WndClass.hInstance = hInstance;
+	WndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+	WndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
+	WndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	WndClass.lpszMenuName = NULL;
+	WndClass.lpszClassName = lpszClass;
+	RegisterClass(&WndClass);
+
+	hwnd = CreateWindow(
+		lpszClass,
+		lpszClass,
+		WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		1000,//CW_USEDEFAULT,
+		600,//CW_USEDEFAULT,
+		NULL,
+		NULL,
+		hInstance,
+		NULL
+		);
+	ShowWindow(hwnd, nCmdShow);
+	UpdateWindow(hwnd);
+
+	while (GetMessage(&msg, NULL, 0, 0))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+	return (int)msg.wParam;
+}
+
+static int  i, j, mx, my, rx, ry, h, min, seconds, lrflag, pos;
+COLORREF fColor;
+
+void CALLBACK TimerProc(HWND hwnd, UINT iMsg, UINT ievent, DWORD dwTime)
+{
+	HDC hdc;
+
+	lrflag *= -1;
+	seconds ++;
+	if(seconds > 60){
+		min += 1;
+		seconds = 0;
+	}
+
+	InvalidateRect(hwnd, NULL, TRUE);
+}
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+{
+	HDC hdc;
+	PAINTSTRUCT ps;
+	static char timebfr_1[100], timebfr_2[100], ch[20];
+	HBRUSH hBrush, oldBrush;
+
+
+	switch (iMsg)
+	{
+	case WM_CREATE:
+		fColor = RGB(0, 0, 0);
+		min = seconds = 0;
+		lrflag = 1;
+		pos = 70;
+		break;
+
+	case WM_LBUTTONUP:
+
+		if(LOWORD(lParam) > 68 && LOWORD(lParam) < 102 && HIWORD(lParam) > 249 && HIWORD(lParam) < 270)
+			SetTimer(hwnd, 1, 1000, (TIMERPROC)TimerProc);
+
+		if(LOWORD(lParam) > 148 && LOWORD(lParam) < 182 && HIWORD(lParam) > 249 && HIWORD(lParam) < 270)
+			KillTimer(hwnd, 1);
+
+		InvalidateRect(hwnd, NULL, TRUE);
+		break;
+
+	case WM_CHAR:
+		if (wParam == VK_BACK)
+			pos--;
+		else ch[pos++] = wParam;
+
+		ch[pos] = '\0';
+		InvalidateRect(hwnd, NULL, TRUE);
+		break;
+
+	case WM_PAINT:
+		hdc = BeginPaint(hwnd, &ps);
+		SetTextColor(hdc, fColor);
+
+
+		Rectangle (hdc, 50, 170, 200, 400);
+		Rectangle (hdc, 68, 249, 102, 270);			//start
+		Rectangle (hdc, 148, 249, 182, 270);		//stop
+
+		TextOut(hdc, 70, 250, "start", 5);
+		TextOut(hdc, 150, 250, "stop", 4);
+
+		sprintf(timebfr_1, "%d", seconds);
+		sprintf(timebfr_2, "%d", min);
+		TextOut(hdc, 90, 200, timebfr_2, strlen(timebfr_2));
+		TextOut(hdc, 150, 200, timebfr_1, strlen(timebfr_1));
+
+		TextOut(hdc, 105, 280, "Alarm?", 6);
+		TextOut(hdc, 70, 310, ch, strlen(ch));
+
+		if (lrflag == 1){
+			hBrush = CreateSolidBrush(RGB(0,0,0));
+			oldBrush = (HBRUSH)SelectObject(hdc,hBrush);
+			Rectangle (hdc, 68, 340, 125, 370);
+			SelectObject(hdc, oldBrush);
+			DeleteObject(hBrush);
+		}
+		else{
+			hBrush = CreateSolidBrush(RGB(0,0,0));
+			oldBrush = (HBRUSH)SelectObject(hdc,hBrush);
+			Rectangle (hdc, 126, 340, 182, 370);
+			SelectObject(hdc, oldBrush);
+			DeleteObject(hBrush);
+		}
+
+		EndPaint(hwnd, &ps);
+		break;
+
+	case WM_DESTROY:
+		KillTimer(hwnd, 1);
+		PostQuitMessage(0);
+		break;
+	}
+	return DefWindowProc(hwnd, iMsg, wParam, lParam);
+}
