@@ -1,0 +1,171 @@
+#include <stdio.h>
+
+void main(){
+	int i, j, k;
+
+	for(i=1; i<10; i+=3){
+		for(k=1; k<10; k++){
+			for(j=i; j<i+3; j++){
+				printf("%d * %d = %d\t", j, k, i*k);
+			}
+			printf("\n");
+		}
+		printf("\n");
+	}
+}
+
+
+#include <stdio.h>
+
+void main(){
+	int i, j, k;
+
+	for(j=5; j>0; j--){
+	
+		for(i=1; i<6; i++){
+			if(i<=j)
+				printf("%d ", i);
+			else
+				printf("  ");
+		}
+		printf("\n");
+	}
+}
+
+
+학번 이동 <-
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	char N[11] = {0B00111111, 0B00000110, 0B01011011, 0B01001111, 0B01100110, 0B01101101, 0B01111101, 0B00100111, 0B01111111, 0B01101111, 0B00000000};
+	int A[15] = {10, 10, 10, 2, 0, 1, 5, 3, 1, 0, 1, 7, 10, 10, 10};
+	int P = 0, R = 0, i = 0;
+
+	DDRC = 0B11111111;
+	DDRA = 0xff;
+
+
+	while(1){
+			for(P = 0; P < 12; P++){
+				for(R = 0; R < 50; R++){ //눈에 보이게 해주는 것 느리게 할 때 조건 변경해줄 것
+					PORTC = 0b11110111; PORTA = N[A[P+3]];   _delay_ms(3);
+					PORTC = 0b11111011; PORTA = N[A[P+2]];   _delay_ms(3);
+					PORTC = 0b11111101; PORTA = N[A[P+1]];   _delay_ms(3);
+					PORTC = 0b11111110; PORTA = N[A[P]];     _delay_ms(3);
+				}
+			}
+	}
+}
+
+
+학번 이동 ->
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	char N[11] = {0B00111111, 0B00000110, 0B01011011, 0B01001111, 0B01100110, 0B01101101, 0B01111101, 0B00100111, 0B01111111, 0B01101111, 0B00000000};
+	int A[15] = {10, 10, 10, 2, 0, 1, 5, 3, 1, 0, 1, 7, 10, 10, 10};
+	int P = 0, R = 0, i = 0;
+
+	DDRC = 0B11111111;
+	DDRA = 0xff;
+
+
+	while(1){
+			for(P = 0; P < 12; P++){
+				for(R = 0; R < 50; R++){ //눈에 보이게 해주는 것 느리게 할 때 조건 변경해줄 것
+					PORTC = 0b11111110; PORTA = N[A[P+3]];   _delay_ms(3);
+					PORTC = 0b11111101; PORTA = N[A[P+2]];   _delay_ms(3);
+					PORTC = 0b11111011; PORTA = N[A[P+1]];   _delay_ms(3);
+					PORTC = 0b11110111; PORTA = N[A[P]];     _delay_ms(3);
+				}
+			}
+	}
+}
+
+
+학번 이동 <-->
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	char N[11] = {0B00111111, 0B00000110, 0B01011011, 0B01001111, 0B01100110, 0B01101101, 0B01111101, 0B00100111, 0B01111111, 0B01101111, 0B00000000};
+	int A[17] = {10, 10, 10, 10, 2, 0, 1, 5, 3, 1, 0, 1, 7, 10, 10, 10, 10};
+	int P = 0, R = 0, i = 0;
+
+	DDRC = 0B11111111;
+	DDRA = 0xff;
+
+
+	while(1){
+			for(P = 0; P < 14; P++){
+				for(R = 0; R < 30; R++){ //눈에 보이게 해주는 것 느리게 할 때 조건 변경해줄 것
+					PORTC = 0b11110111; PORTA = N[A[P+3]];   _delay_ms(3);
+					PORTC = 0b11111011; PORTA = N[A[P+2]];   _delay_ms(3);
+					PORTC = 0b11111101; PORTA = N[A[P+1]];   _delay_ms(3);
+					PORTC = 0b11111110; PORTA = N[A[P]];     _delay_ms(3);
+				}
+			}
+
+			for(P = 13; P > 0; P--){
+				for(R = 0; R < 30; R++){ //눈에 보이게 해주는 것 느리게 할 때 조건 변경해줄 것
+					PORTC = 0b11111110; PORTA = N[A[P]];   _delay_ms(3);
+					PORTC = 0b11111101; PORTA = N[A[P+1]];   _delay_ms(3);
+					PORTC = 0b11111011; PORTA = N[A[P+2]];   _delay_ms(3);
+					PORTC = 0b11110111; PORTA = N[A[P+3]];     _delay_ms(3);
+				}
+			}
+	}
+}
+
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	char N[11] = {0B00111111, 0B00000110, 0B01011011, 0B01001111, 0B01100110, 0B01101101, 0B01111101, 0B00100111, 0B01111111, 0B01101111, 0B00000000};
+	int A[17] = {10, 10, 10, 10, 2, 0, 1, 5, 3, 1, 0, 1, 7, 10, 10, 10, 10};
+	int P = 0, R = 0, i = 0;
+
+	DDRC = 0B11111111;
+	DDRA = 0xff;
+
+
+	while(1){
+			for(P = 0; P < 14; P++){
+				for(R = 0; R < 30; R++){ //눈에 보이게 해주는 것 느리게 할 때 조건 변경해줄 것
+					PORTC = 0b11110111; PORTA = N[A[P+3]];   _delay_ms(3);
+					PORTC = 0b11111011; PORTA = N[A[P+2]];   _delay_ms(3);
+					PORTC = 0b11111101; PORTA = N[A[P+1]];   _delay_ms(3);
+					PORTC = 0b11111110; PORTA = N[A[P]];     _delay_ms(3);
+				}
+			}
+
+			for(P = 13; P > 0; P--){
+				for(R = 0; R < 30; R++){ //눈에 보이게 해주는 것 느리게 할 때 조건 변경해줄 것
+					PORTC = 0b11111110; PORTA = N[A[P]];   _delay_ms(3);
+					PORTC = 0b11111101; PORTA = N[A[P+1]];   _delay_ms(3);
+					PORTC = 0b11111011; PORTA = N[A[P+2]];   _delay_ms(3);
+					PORTC = 0b11110111; PORTA = N[A[P+3]];     _delay_ms(3);
+				}
+			}
+
+			
+					PORTC = 0b11111110; PORTA = 0b00000001;   _delay_ms(500);
+					PORTC = 0b11111101; PORTA = 0b00000001;   _delay_ms(500);
+					PORTC = 0b11111011; PORTA = 0b00000001;   _delay_ms(500);
+					PORTC = 0b11110111; PORTA = 0b00000001;   _delay_ms(500);
+					PORTC = 0b11110111; PORTA = 0b00000010;   _delay_ms(500);
+					PORTC = 0b11110111; PORTA = 0b00000100;   _delay_ms(500);
+					PORTC = 0b11110111; PORTA = 0b00001000;   _delay_ms(500);
+					PORTC = 0b11111011; PORTA = 0b00001000;   _delay_ms(500);
+					PORTC = 0b11111101; PORTA = 0b00001000;   _delay_ms(500);
+					PORTC = 0b11111110; PORTA = 0b00001000;   _delay_ms(500);
+					PORTC = 0b11111110; PORTA = 0b00010000;   _delay_ms(500);
+					PORTC = 0b11111110; PORTA = 0b00100001;   _delay_ms(500);
+				
+	}
+}
+

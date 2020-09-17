@@ -1,0 +1,64 @@
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	char N;
+	DDRB = 0B11111111;
+
+	while(1){
+				for(N = 0B10000000; N; N >>= 1){
+						PORTB = ~N;
+						_delay_ms(300);
+				}
+				for(N = 0B00000001; N; N <<= 1){
+						PORTB = ~N;
+						_delay_ms(300);
+				}
+		
+	}
+}
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	DDRB = 0B11111111;
+
+	while(1){
+				PORTB = ~0B00000000; _delay_ms(200);
+				PORTB = ~0B10000000; _delay_ms(200);
+				PORTB = ~0B11000000; _delay_ms(200);
+				PORTB = ~0B11100000; _delay_ms(200);
+				PORTB = ~0B11110000; _delay_ms(200);
+				PORTB = ~0B11111000; _delay_ms(200);
+				PORTB = ~0B11111100; _delay_ms(200);
+				PORTB = ~0B11111110; _delay_ms(200);
+				PORTB = ~0B11111111; _delay_ms(200);
+		
+	}
+}
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	DDRA = 0xFF;
+	DDRC = 0xFF;
+
+	PORTC = 0xF0;
+
+	while(1){
+		PORTC = 0b11111110;
+		PORTA = 0b00000110; _delay_ms(2);
+		PORTC = 0b11111110;
+		PORTA = 0b00000110; _delay_ms(2);
+		PORTC = 0b11111110;
+		PORTA = 0b00000110; _delay_ms(2);
+		PORTC = 0b11111110;
+		PORTA = 0b00000110; _delay_ms(2);
+		
+	}
+}

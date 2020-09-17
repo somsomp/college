@@ -1,0 +1,227 @@
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	char N;
+	DDRB = 0B11111111;
+
+	while(1){
+				PORTB = 1; _delay_ms(300);
+				PORTB = 2; _delay_ms(300);
+				PORTB = 4; _delay_ms(300);
+				PORTB = 8; _delay_ms(300);
+				PORTB = 16; _delay_ms(300);
+				PORTB = 32; _delay_ms(300);
+				PORTB = 64; _delay_ms(300);
+				PORTB = 128; _delay_ms(300);
+	}
+}
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	char N;
+	DDRB = 0B11111111;
+
+	while(1){
+				for(N = 1; N; N <<= 1){
+					PORTB = N; _delay_ms(200);
+				}
+	}
+}
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	char N;
+	DDRB = 0B11111111;
+
+	while(1){
+				PORTB = 0B11111111; _delay_ms(300);
+				PORTB = 0B00000000; _delay_ms(300);
+				PORTB = 0B10000001; _delay_ms(300);
+				PORTB = 0B11000011; _delay_ms(300);
+				PORTB = 0B11100111; _delay_ms(300);
+				PORTB = 0B11111111; _delay_ms(300);
+				PORTB = 0B01111110; _delay_ms(300);
+				PORTB = 0B00111100; _delay_ms(300);
+				PORTB = 0B00000000; _delay_ms(300);
+				PORTB = 0B00011000; _delay_ms(300);
+				PORTB = 0B00111100; _delay_ms(300);
+				PORTB = 0B01111110; _delay_ms(300);
+				PORTB = 0B11111111; _delay_ms(300);
+				PORTB = 0B11100111; _delay_ms(300);
+				PORTB = 0B11000011; _delay_ms(300);
+				PORTB = 0B10000001; _delay_ms(300);
+				PORTB = 0B00000000; _delay_ms(300);
+				PORTB = 0B11111111; _delay_ms(300);
+	}
+}
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	char N;
+
+	DDRC = 0B11111111;
+	DDRA = 0xff;
+
+	PORTC = 0b11111010;
+
+	while(1){
+				PORTA = 0B00000110; _delay_ms(500);
+				PORTA = 0B01011011; _delay_ms(500);
+				PORTA = 0B01001111; _delay_ms(500);
+	}
+}
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	char N;
+
+	DDRC = 0B11111111;
+	DDRA = 0xff;
+
+	PORTC = 0b11110111;
+
+	while(1){
+				PORTA = 0B00111111; _delay_ms(500);
+				PORTA = 0B00000110; _delay_ms(500);
+				PORTA = 0B01011011; _delay_ms(500);
+				PORTA = 0B01001111; _delay_ms(500);
+				PORTA = 0B01100110; _delay_ms(500);
+				PORTA = 0B01101101; _delay_ms(500);
+				PORTA = 0B01111101; _delay_ms(500);
+				PORTA = 0B00100111; _delay_ms(500);
+				PORTA = 0B01111111; _delay_ms(500);
+				PORTA = 0B01101111; _delay_ms(500);
+	}
+}
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	char N[10] = {0B00111111, 0B00000110, 0B01011011, 0B01001111, 0B01100110, 0B01101101, 0B01111101, 0B00100111, 0B01111111, 0B01101111};
+	int P = 0, R = 0;
+
+	DDRC = 0B11111111;
+	DDRA = 0xff;
+
+
+	while(1){
+				for(P = 0; P < 10; P++){ //숫자 변경
+					for(R = 0; R <20; R++){ //눈에 보이게 해주는 것
+						PORTC = 0b11110111; PORTA = N[P]; _delay_ms(3);
+						PORTC = 0b11111011; PORTA = N[P+1]; _delay_ms(3);
+					}
+				}
+	}
+}
+
+0~99
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	char N[10] = {0B00111111, 0B00000110, 0B01011011, 0B01001111, 0B01100110, 0B01101101, 0B01111101, 0B00100111, 0B01111111, 0B01101111};
+	int P = 0, R = 0, Q = 0;
+
+	DDRC = 0B11111111;
+	DDRA = 0xff;
+
+
+	while(1){
+				for(P = 0; P < 10; P++){ //십의 자리 숫자 변경
+					for(Q = 0; Q < 10; Q++){ //일의 자리 숫자 변경
+						for(R = 0; R <100; R++){ //눈에 보이게 해주는 것 느리게 할 때 조건 변경해줄 것
+							PORTC = 0b11110111; PORTA = N[Q]; _delay_ms(3);
+							PORTC = 0b11111011; PORTA = N[P]; _delay_ms(3);
+						}
+					}
+				}
+	}
+}
+
+0~9999
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	char N[10] = {0B00111111, 0B00000110, 0B01011011, 0B01001111, 0B01100110, 0B01101101, 0B01111101, 0B00100111, 0B01111111, 0B01101111};
+	int P = 0, R = 0, Q = 0, X = 0, X1 = 0, X10 = 0, X100 = 0, X1000 = 0;
+
+	DDRC = 0B11111111;
+	DDRA = 0xff;
+
+
+	while(1){
+		if(X == 10000){
+			X1 = X10 = X100 = X1000 = 0;
+		}
+
+		X++;
+		X1 = X%10;
+		X10 = X/10%10;
+		X100 = X/100%10;
+		X1000 = X/1000%10;
+
+		for(R = 0; R <10; R++){ //눈에 보이게 해주는 것 느리게 할 때 조건 변경해줄 것
+			PORTC = 0b11110111; PORTA = N[X1];    _delay_ms(3);
+			PORTC = 0b11111011; PORTA = N[X10];   _delay_ms(3);
+			PORTC = 0b11111101; PORTA = N[X100];  _delay_ms(3);
+			PORTC = 0b11111110; PORTA = N[X1000]; _delay_ms(3);
+		}
+	}
+}
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main(){
+	char N[10] = {0B00111111, 0B00000110, 0B01011011, 0B01001111, 0B01100110, 0B01101101, 0B01111101, 0B00100111, 0B01111111, 0B01101111};
+	int R = 0, DD = 0, DD1 = 1, DD10 = 0, MM = 1, MM1 = 1, MM10 = 0;
+
+	int month[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+	DDRC = 0B11111111;
+	DDRA = 0xff;
+
+
+	while(1){
+		if(DD == month[MM-1]){
+			DD = 0;
+			MM++;
+		}
+
+		if(MM == 12){
+			DD = 0;
+			MM = 1;
+		}
+
+		DD++;
+
+		DD1 = DD%10;
+		DD10 = DD/10;
+		MM1 = MM%10;
+		MM10 = MM/10;
+
+		for(R = 0; R < 10; R++){ //눈에 보이게 해주는 것 느리게 할 때 조건 변경해줄 것
+			PORTC = 0b11110111; PORTA = N[DD1];    _delay_ms(3);
+			PORTC = 0b11111011; PORTA = N[DD10];   _delay_ms(3);
+			PORTC = 0b11111101; PORTA = N[MM1];    _delay_ms(3);
+			PORTC = 0b11111110; PORTA = N[MMI0];   _delay_ms(3);
+		}
+	}
+}
