@@ -1,0 +1,65 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class char_stack {
+	int size;
+	char* top;
+	char* s;
+
+public:
+	char_stack(int sz) { top = s = new char[size = sz]; }
+	~char_stack() { delete[] s; }
+
+	void push(char c) { *top++ = c; }
+	char pop() { return *--top; }
+	int empty() {
+		if (top == NULL)
+			return 1;
+		else
+			return 0;
+	}
+};
+
+
+int main() {
+	int cnt = 0, valid, pos = 0;
+	string command;
+	char_stack s1(cnt);
+	char character;
+
+	cin >> cnt;
+
+	for (int i = 0; i < cnt; i++) {
+
+		command = "";
+		pos = 0;
+		valid = 1;
+
+		cout << "\n검사할 식을 입력하세요.\n";
+		cin >> command;
+
+		for (int j = 0; j < (int)command.size(); j++) {
+			if (command[j] == '(' || command[j] == '['|| command[j] == '{') {
+				s1.push(command[j]);
+			}
+			if (command[j] == ')' || command[j] == ']' || command[j] == '}')
+				if (s1.empty())
+					valid = 0;
+				else {
+					character = s1.pop();
+					if (character != command[j])
+						valid = 0;
+				}
+		}
+		s1.push(NULL);
+
+		if (!(s1.empty()))
+			valid = 0;
+
+		if (valid)
+			cout << command << "는 정상적인 식 입니다.\n\n";
+		else
+			cout << command << "는 비정상적인 식 입니다.\n\n";
+	}
+}

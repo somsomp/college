@@ -1,0 +1,117 @@
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+
+class node {
+	friend class List;
+
+private:
+	int coeff;		//계수
+	int expn;		//지수
+	node* next;
+
+public:
+	node(int c, int e, node* n) {
+		coeff = c;
+		expn = e;
+		next = n;
+	}
+};
+
+class List {
+
+private:
+	node* head;
+	node* tail;
+
+public:
+	List() {};
+	List(int c, int e);
+	void push(int c, int e);
+	void POLYADD(List* A);
+	void POLYMUL(List* A);
+};
+
+List::List(int c, int e) {
+	head = tail = new node(c, e, NULL);
+}
+
+void List::push(int c, int e) {
+	node* newNode = new node(c, e, NULL);
+
+	if (head == NULL) {
+		head = newNode;
+	}
+	else
+		tail->next = newNode;
+
+	tail = newNode;
+}
+
+void List::POLYADD(List* second) {
+	int add;
+
+	while (head != NULL) {
+		add = head->coeff + second->head->coeff;
+		cout << add << "x^" << head->expn;
+		head = head->next;
+		second->head = second->head->next;
+		if(head != NULL)
+			cout << " + ";
+	}
+	cout << endl;
+}
+
+void List::POLYMUL(List* second) {
+	int mul;
+
+	for (int i = 0; i < head->expn; i++) {
+		mul = 0;
+		for (int j = 0; j < second->head->expn; j++) {
+			mul += head->coeff * second->head->coeff;
+			cout << mul << "x^" << head->expn;
+			head = head->next;
+			second->head = second->head->next;
+			if (head != NULL)
+				cout << " + ";
+		}
+	}
+	getchar();
+}
+
+int main() {
+	List first;
+	List second;
+	int cf, i, j;
+	int ex_max;
+
+	cout << "첫번째 식의 최대 항이 몇차항인가??" << endl;
+	cin >> ex_max;
+
+	for (i = 0; i <= ex_max; i++) {
+		cout << i << "차의 계수가 무엇인가??" << endl;
+		cin >> cf;
+		first.push(cf, i);
+	}
+
+	cout << "두번째 식의 최대 항이 몇차항인가??" << endl;
+	cin >> ex_max;
+
+	for (j = 0; j <= ex_max; j++) {
+		cout << j << "차의 계수가 무엇인가??" << endl;
+		cin >> cf;
+		second.push(cf, j);
+	}
+
+	if (i > j) {
+		j++;
+		second.push(0, j);
+	}
+	else if (i < j) {
+		i++;
+		first.push(0, i);
+	}
+
+	first.POLYADD(&second);
+	first.POLYMUL(&second);
+}
