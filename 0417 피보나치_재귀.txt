@@ -1,0 +1,62 @@
+#include <stdio.h>
+
+int tpos;
+
+void printtap(int cnt){
+	int i;
+
+	for(i=0;i<tpos;i++)
+		printf("|\t");
+}
+
+int fibo(int n){
+	int a, b, sum;
+
+	tpos++;
+	printtap(tpos);
+
+	printf("start %d fibo\n", n);
+
+	if(n==2){
+		printtap(tpos);
+		printf("return 2: %d \n", n);
+		tpos--;
+		return 1;
+	}
+
+	if(n==1){
+		printtap(tpos);
+		printf("return 1: %d \n", n);
+		tpos--;
+		return 1;
+	}
+
+	printtap(tpos);
+	printf("call_1 %d \n", n);
+	a = fibo(n-1);
+	
+	printtap(tpos);
+	printf("call_2 %d \n", n);
+	b = fibo(n-2);
+
+	sum = a + b;
+
+	printtap(tpos);
+	printf("return %d sum = %d \n", n,a+b);
+	
+	tpos--;
+	return sum;
+}
+
+void main(){
+	int a, num;
+
+	tpos=0;
+	scanf("%d", &num);
+	
+	printf("M : call %d fibo!!\n\n", num);
+	
+	a = fibo(num);
+
+	printf("M : %d, fibo = %d \n", num, a);
+}

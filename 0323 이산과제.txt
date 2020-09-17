@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+void main(){
+	int arr[10]={1,3,45,50,2,9,30,7,66,81}, i, a;
+
+	for(i=0;i<10;i++)
+		printf("%d\t", arr[i]);
+
+	for(i=9;i>0;i--){
+		if(arr[i]>arr[i-1]){
+			a=arr[i-1];
+			arr[i-1]=arr[i];
+			arr[i]=a;
+		}
+	}
+	printf("%d\t", arr[0]);
+}

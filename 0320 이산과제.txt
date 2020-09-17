@@ -1,0 +1,15 @@
+#include <stdio.h>
+
+void main(){
+	int a=1;
+
+	while(a){
+		scanf("%d", &a);
+
+		if(a>0)
+			printf("\n%d는 양수 입니다.\n\n", a);
+		else if(a<0)
+			printf("\n%d는 음수 입니다.\n\n", a);
+	}
+	printf("\n프로그램을 종료합니다.\n");
+}

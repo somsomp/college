@@ -1,0 +1,92 @@
+#include <stdio.h>
+
+void main() {
+	int i, j, k, a[7] = { 0, }, b[7] = { 0, }, select = 1, count_a = 0, count_b = 0;
+
+	FILE *fp1, *fp2;
+	fp1 = fopen("a.txt", "r");
+
+	for (i = 0; !feof(fp1); i++) {
+		fscanf(fp1, "%d", &a[i]);
+	}
+	count_a=i;
+
+
+	fp2 = fopen("b.txt", "r");
+
+	for (i = 0; !feof(fp2); i++) {
+		fscanf(fp2, "%d", &b[i]);
+	}
+	count_b=i;
+
+	fclose(fp1);
+	fclose(fp2);
+
+
+	while (select)
+	{
+		printf("which one?\n1. AND\n2. OR\n3.XOR\n\n");
+		scanf("%d", &select);
+
+		if (select == 1) {
+			printf("And result = ");
+
+			for (i = 0; i<count_a; i++){
+				for (j = 0; j<count_b; j++) {
+					if (a[i] == b[j]){
+						printf("%d\t", a[i]);
+					}
+				}
+			}
+
+			printf("\nCalculation 1 END\n\n");
+		}
+
+		if (select == 2) {
+			printf("Or result = ");
+
+			for (i = 0; i < count_a; i++) {
+				printf("%d ", a[i]);
+			}
+
+			for (i = 0; i < count_b; i++) {
+				for (j = 0; j < count_a; j++) {
+					if (a[j] == b[i]) {
+						break;
+					}
+				}
+				if(j == count_a)
+					printf("%d ", b[i]);
+			}
+
+			printf("\nCalculation 2 END\n\n");
+		}
+
+		if (select == 3) {
+			printf("Xor result = ");
+
+			for (i = 0; i<count_a; i++){
+				for (j = 0; j<count_b; j++){
+					if (a[i] == b[j])
+						break;
+				}
+				if(j == count_b)
+					printf("%d\t", a[i]);
+			}
+
+			for (i = 0; i<count_b; i++){
+				for (j = 0; j<count_a; j++){
+					if (a[j] == b[i])
+						break;
+				}
+				if(j == count_a)
+					printf("%d\t", b[i]);
+			}
+
+			printf("\nCalculation 3 END\n\n");
+		}
+
+		if (select != 1 && select != 2 && select != 3)
+			printf("Select again!\n\n");
+	}
+}

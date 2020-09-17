@@ -1,0 +1,48 @@
+#include <stdio.h>
+
+int binary_search(int number[], int key);
+
+int low=1, high=10, middle=0;
+
+void main(){
+
+	int key, arr[10]={2, 5, 27, 40, 59, 62, 74, 87, 91, 100};
+
+	printf("찾을 숫자를 입력하세요. \n");
+	scanf("%d", &key);
+
+	printf("탐색 결과 = %d\n", binary_search(arr, key));
+}
+
+int binary_search(int number[], int key){
+
+	printf("\n설정값 : \nlow = %d    |    middle = %d    |    high = %d\n\n", low, middle, high);
+
+	while(1){
+		if(low > high){
+			printf("No search\nlow = %d    |    middle = %d    |    high = %d\n\n", low, middle, high);
+			return 0;
+		}
+		
+		middle = (low + high)/2;
+		printf("miidle number\nlow = %d    |    middle = %d    |    high = %d\n\n", low, middle, high);
+
+		if(key == number[middle]){
+			printf("key correct!\nlow = %d    |    middle = %d    |    high = %d\n\n", low, middle, high);
+			return middle;
+		}
+
+		if(key < number[middle]){
+			printf("middle left\nlow = %d    |    middle = %d    |    high = %d\n\n", low, middle, high);
+			high = middle-1;
+		}
+
+		else{
+			printf("middle right\nlow = %d    |    middle = %d    |    high = %d\n\n", low, middle, high);
+			low = middle + 1;
+		}
+
+		printf("결과값 : \nlow = %d    |    middle = %d    |    high = %d\n\n-------------------------------------------------\n", low, middle, high);
+		return binary_search(number, key);
+	}
+}
